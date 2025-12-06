@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Icon from '@/components/ui/icon';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -44,6 +45,7 @@ const mockSuppliers = [
 ];
 
 const Index = () => {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('chat');
   const [searchQuery, setSearchQuery] = useState('');
   const [filterCity, setFilterCity] = useState('all');
@@ -94,9 +96,20 @@ const Index = () => {
                 <Icon name="Upload" className="w-4 h-4 mr-2" />
                 Загрузка
               </Button>
-              <Button className="bg-gradient-to-r from-gold to-gold-dark text-dark font-semibold hover-scale">
+              <Button
+                className="bg-gradient-to-r from-gold to-gold-dark text-dark font-semibold hover-scale"
+                onClick={() => navigate('/auth')}
+              >
                 <Icon name="Crown" className="w-4 h-4 mr-2" />
                 Premium
+              </Button>
+              <Button
+                variant="outline"
+                className="border-gold/30 text-gold hover:bg-gold/10 hover:text-gold"
+                onClick={() => navigate('/auth')}
+              >
+                <Icon name="LogIn" className="w-4 h-4 mr-2" />
+                Войти
               </Button>
             </nav>
           </div>
