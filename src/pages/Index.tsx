@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
 const mockSuppliers = [
   {
@@ -96,13 +97,75 @@ const Index = () => {
                 <Icon name="Upload" className="w-4 h-4 mr-2" />
                 Загрузка
               </Button>
-              <Button
-                className="bg-gradient-to-r from-gold to-gold-dark text-dark font-semibold hover-scale"
-                onClick={() => navigate('/auth')}
-              >
-                <Icon name="Crown" className="w-4 h-4 mr-2" />
-                Premium
-              </Button>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button className="bg-gradient-to-r from-gold to-gold-dark text-dark font-semibold hover-scale">
+                    <Icon name="Crown" className="w-4 h-4 mr-2" />
+                    Premium
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-80 bg-dark-lighter border-gold/30 p-0">
+                  <div className="space-y-2 p-4">
+                    <h3 className="text-lg font-semibold text-gold mb-3">Выберите тариф</h3>
+                    <Card
+                      className="bg-dark border-gold/20 hover:border-gold/50 transition-all cursor-pointer hover-scale"
+                      onClick={() => navigate('/payment?plan=month')}
+                    >
+                      <CardContent className="p-4">
+                        <div className="flex items-start gap-3">
+                          <div className="w-10 h-10 bg-gold/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <Icon name="Calendar" className="w-5 h-5 text-gold" />
+                          </div>
+                          <div className="flex-1">
+                            <h4 className="text-lg font-bold text-gold mb-1">Месяц Безлимит</h4>
+                            <p className="text-2xl font-bold text-foreground mb-2">1,200 ₽</p>
+                            <ul className="space-y-1 text-sm text-silver">
+                              <li className="flex items-center gap-1">
+                                <Icon name="Check" className="w-3 h-3 text-gold" />
+                                Неограниченные AI запросы
+                              </li>
+                              <li className="flex items-center gap-1">
+                                <Icon name="Check" className="w-3 h-3 text-gold" />
+                                Загрузка своих прайсов
+                              </li>
+                              <li className="flex items-center gap-1">
+                                <Icon name="Check" className="w-3 h-3 text-gold" />
+                                Экспорт данных
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                    <Card
+                      className="bg-dark border-silver/20 hover:border-silver/50 transition-all cursor-pointer hover-scale"
+                      onClick={() => navigate('/payment?plan=day')}
+                    >
+                      <CardContent className="p-4">
+                        <div className="flex items-start gap-3">
+                          <div className="w-10 h-10 bg-silver/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <Icon name="Clock" className="w-5 h-5 text-silver" />
+                          </div>
+                          <div className="flex-1">
+                            <h4 className="text-lg font-bold text-silver mb-1">День Безлимит</h4>
+                            <p className="text-2xl font-bold text-foreground mb-2">150 ₽</p>
+                            <ul className="space-y-1 text-sm text-silver">
+                              <li className="flex items-center gap-1">
+                                <Icon name="Check" className="w-3 h-3 text-silver" />
+                                24 часа полного доступа
+                              </li>
+                              <li className="flex items-center gap-1">
+                                <Icon name="Check" className="w-3 h-3 text-silver" />
+                                Все функции Premium
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+                </PopoverContent>
+              </Popover>
               <Button
                 variant="outline"
                 className="border-gold/30 text-gold hover:bg-gold/10 hover:text-gold"
