@@ -76,6 +76,14 @@ const Index = () => {
               <Button
                 variant="ghost"
                 className="text-silver hover:text-gold transition-colors"
+                onClick={() => navigate('/search')}
+              >
+                <Icon name="Search" className="w-4 h-4 mr-2" />
+                Умный поиск
+              </Button>
+              <Button
+                variant="ghost"
+                className="text-silver hover:text-gold transition-colors"
                 onClick={() => setActiveTab('chat')}
               >
                 <Icon name="MessageSquare" className="w-4 h-4 mr-2" />

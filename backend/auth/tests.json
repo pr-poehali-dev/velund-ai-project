@@ -1,0 +1,21 @@
+{
+  "tests": [
+    {
+      "name": "Login with admin credentials",
+      "method": "POST",
+      "path": "/",
+      "body": {
+        "action": "login",
+        "email": "Shagadik2009@gmail.com",
+        "password": "53060376SHAga11+"
+      },
+      "expectedStatus": 200,
+      "expectedBody": {
+        "success": true,
+        "user": "object",
+        "token": "string"
+      },
+      "bodyMatcher": "partial"
+    }
+  ]
+}

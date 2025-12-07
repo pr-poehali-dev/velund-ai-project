@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { toast } from 'sonner';
 import Icon from '@/components/ui/icon';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -22,18 +23,101 @@ const Auth = () => {
   const [registerPhone, setRegisterPhone] = useState('');
   const [selectedRole, setSelectedRole] = useState<'user' | 'premium' | 'admin'>('user');
 
-  const handleLogin = (e: React.FormEvent) => {
+  const [loading, setLoading] = useState(false);
+  const API_URL = 'https://functions.poehali.dev/580b33e9-2602-423a-bd33-2eea5895bfe7';
+
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Implement login logic
-    console.log('Login:', { loginEmail, loginPassword });
-    navigate('/');
+    
+    if (!loginEmail || !loginPassword) {
+      toast.error('Заполните все поля');
+      return;
+    }
+
+    setLoading(true);
+    
+    try {
+      const response = await fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'login',
+          email: loginEmail,
+          password: loginPassword
+        })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        toast.error(data.error || 'Ошибка входа');
+        setLoading(false);
+        return;
+      }
+
+      localStorage.setItem('velund_user', JSON.stringify(data.user));
+      localStorage.setItem('velund_token', data.token);
+
+      toast.success('Добро пожаловать!', {
+        description: `${data.user.full_name} (${data.user.role})`
+      });
+
+      if (data.user.role === 'admin') {
+        navigate('/admin');
+      } else {
+        navigate('/');
+      }
+    } catch (error) {
+      toast.error('Ошибка подключения к серверу');
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleRegister = (e: React.FormEvent) => {
+  const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Implement registration logic
-    console.log('Register:', { registerName, registerEmail, registerPassword, registerPhone, selectedRole });
-    navigate('/');
+    
+    if (!registerEmail || !registerPassword || !registerName) {
+      toast.error('Заполните обязательные поля');
+      return;
+    }
+
+    setLoading(true);
+    
+    try {
+      const response = await fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'register',
+          email: registerEmail,
+          password: registerPassword,
+          full_name: registerName,
+          phone: registerPhone
+        })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        toast.error(data.error || 'Ошибка регистрации');
+        setLoading(false);
+        return;
+      }
+
+      localStorage.setItem('velund_user', JSON.stringify(data.user));
+      localStorage.setItem('velund_token', data.token);
+
+      toast.success('Регистрация успешна!', {
+        description: 'Добро пожаловать в Velund AI'
+      });
+
+      navigate('/');
+    } catch (error) {
+      toast.error('Ошибка подключения к серверу');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const roles = [
@@ -145,9 +229,19 @@ const Auth = () => {
                   <Button
                     type="submit"
                     className="w-full bg-gradient-to-r from-gold to-gold-dark text-dark font-semibold hover-scale"
+                    disabled={loading}
                   >
-                    <Icon name="LogIn" className="w-4 h-4 mr-2" />
-                    Войти
+                    {loading ? (
+                      <>
+                        <Icon name="Loader2" className="w-4 h-4 mr-2 animate-spin" />
+                        Вход...
+                      </>
+                    ) : (
+                      <>
+                        <Icon name="LogIn" className="w-4 h-4 mr-2" />
+                        Войти
+                      </>
+                    )}
                   </Button>
                   <p className="text-center text-sm text-silver">
                     Нет аккаунта?{' '}
@@ -222,9 +316,19 @@ const Auth = () => {
                     <Button
                       type="submit"
                       className="w-full bg-gradient-to-r from-gold to-gold-dark text-dark font-semibold hover-scale"
+                      disabled={loading}
                     >
-                      <Icon name="UserPlus" className="w-4 h-4 mr-2" />
-                      Зарегистрироваться
+                      {loading ? (
+                        <>
+                          <Icon name="Loader2" className="w-4 h-4 mr-2 animate-spin" />
+                          Регистрация...
+                        </>
+                      ) : (
+                        <>
+                          <Icon name="UserPlus" className="w-4 h-4 mr-2" />
+                          Зарегистрироваться
+                        </>
+                      )}
                     </Button>
                     <p className="text-center text-sm text-silver">
                       Уже есть аккаунт?{' '}

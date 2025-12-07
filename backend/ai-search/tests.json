@@ -1,0 +1,21 @@
+{
+  "tests": [
+    {
+      "name": "AI search with natural language query",
+      "method": "POST",
+      "path": "/",
+      "body": {
+        "query": "Найди швеллер в Казани дешевле 50000",
+        "user_id": 1
+      },
+      "expectedStatus": 200,
+      "expectedBody": {
+        "query": "string",
+        "parsed": "object",
+        "results": "array",
+        "count": "number"
+      },
+      "bodyMatcher": "partial"
+    }
+  ]
+}

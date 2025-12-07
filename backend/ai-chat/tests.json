@@ -1,0 +1,20 @@
+{
+  "tests": [
+    {
+      "name": "AI chat consultation",
+      "method": "POST",
+      "path": "/",
+      "body": {
+        "message": "Подскажи аналоги стали Ст3",
+        "user_id": 1
+      },
+      "expectedStatus": 200,
+      "expectedBody": {
+        "message": "string",
+        "response": "string",
+        "timestamp": "string"
+      },
+      "bodyMatcher": "partial"
+    }
+  ]
+}
