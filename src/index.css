@@ -78,4 +78,76 @@
   .text-gradient-silver {
     @apply bg-gradient-to-r from-silver-light via-silver to-silver-dark bg-clip-text text-transparent;
   }
+
+  .gold-glow {
+    box-shadow:
+      0 0 15px rgba(212, 175, 55, 0.3),
+      0 0 30px rgba(212, 175, 55, 0.15);
+  }
+
+  .gold-glow-hover {
+    transition: box-shadow 0.3s ease;
+  }
+
+  .gold-glow-hover:hover {
+    box-shadow:
+      0 0 20px rgba(212, 175, 55, 0.5),
+      0 0 40px rgba(212, 175, 55, 0.25),
+      0 0 60px rgba(212, 175, 55, 0.1);
+  }
+
+  .silver-glow {
+    box-shadow:
+      0 0 15px rgba(192, 192, 192, 0.3),
+      0 0 30px rgba(192, 192, 192, 0.15);
+  }
+
+  .silver-glow-hover {
+    transition: box-shadow 0.3s ease;
+  }
+
+  .silver-glow-hover:hover {
+    box-shadow:
+      0 0 20px rgba(192, 192, 192, 0.5),
+      0 0 40px rgba(192, 192, 192, 0.25);
+  }
+
+  .metal-gradient {
+    background: linear-gradient(
+      135deg,
+      #1a1f2c 0%,
+      #252b3b 25%,
+      #1a1f2c 50%,
+      #252b3b 75%,
+      #1a1f2c 100%
+    );
+    background-size: 400% 400%;
+    animation: metalShine 8s ease infinite;
+  }
+
+  @keyframes metalShine {
+    0%,
+    100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+
+  .pulse-gold {
+    animation: pulseGold 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  @keyframes pulseGold {
+    0%,
+    100% {
+      opacity: 1;
+      box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+    }
+    50% {
+      opacity: 0.8;
+      box-shadow: 0 0 30px rgba(212, 175, 55, 0.6);
+    }
+  }
 }

@@ -167,6 +167,14 @@ const Index = () => {
                 </PopoverContent>
               </Popover>
               <Button
+                variant="ghost"
+                className="text-silver hover:text-gold transition-colors"
+                onClick={() => navigate('/supplier')}
+              >
+                <Icon name="Store" className="w-4 h-4 mr-2" />
+                Я поставщик
+              </Button>
+              <Button
                 variant="outline"
                 className="border-gold/30 text-gold hover:bg-gold/10 hover:text-gold"
                 onClick={() => navigate('/auth')}
