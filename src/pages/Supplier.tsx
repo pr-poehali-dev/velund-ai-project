@@ -2,27 +2,25 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Icon from '@/components/ui/icon';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toast } from 'sonner';
+import SupplierStatsCards from '@/components/supplier/SupplierStatsCards';
+import SupplierUploadTab from '@/components/supplier/SupplierUploadTab';
+import SupplierPricesTab from '@/components/supplier/SupplierPricesTab';
+import SupplierProductsTab from '@/components/supplier/SupplierProductsTab';
 
 const Supplier = () => {
   const navigate = useNavigate();
   const [files, setFiles] = useState<File[]>([]);
-  const [dragActive, setDragActive] = useState(false);
   const [uploading, setUploading] = useState(false);
-  const [productName, setProductName] = useState('');
-  const [productPrice, setProductPrice] = useState('');
-  const [productQuantity, setProductQuantity] = useState('');
 
   const uploadedPrices = [
     {
       id: 1,
       fileName: 'прайс_трубы_январь_2024.xlsx',
       uploadDate: '2024-01-20',
-      status: 'approved',
+      status: 'approved' as const,
       itemsCount: 145,
       views: 234
     },
@@ -30,7 +28,7 @@ const Supplier = () => {
       id: 2,
       fileName: 'каталог_металл_2024.pdf',
       uploadDate: '2024-01-15',
-      status: 'pending',
+      status: 'pending' as const,
       itemsCount: 89,
       views: 0
     },
@@ -38,7 +36,7 @@ const Supplier = () => {
       id: 3,
       fileName: 'прайс_декабрь_2023.xlsx',
       uploadDate: '2023-12-20',
-      status: 'rejected',
+      status: 'rejected' as const,
       itemsCount: 0,
       views: 0,
       rejectReason: 'Неполная информация о товарах'
@@ -66,57 +64,6 @@ const Supplier = () => {
     }
   ];
 
-  const handleDrag = (e: React.DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (e.type === 'dragenter' || e.type === 'dragover') {
-      setDragActive(true);
-    } else if (e.type === 'dragleave') {
-      setDragActive(false);
-    }
-  };
-
-  const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setDragActive(false);
-
-    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      handleFiles(Array.from(e.dataTransfer.files));
-    }
-  };
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      handleFiles(Array.from(e.target.files));
-    }
-  };
-
-  const handleFiles = (newFiles: File[]) => {
-    const validFiles = newFiles.filter(file => {
-      const validTypes = [
-        'application/pdf',
-        'application/vnd.ms-excel',
-        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-        'image/jpeg',
-        'image/png'
-      ];
-      return validTypes.includes(file.type);
-    });
-
-    if (validFiles.length !== newFiles.length) {
-      toast.error('Некоторые файлы имеют неподдерживаемый формат');
-    }
-
-    setFiles(prev => [...prev, ...validFiles]);
-    toast.success(`Добавлено файлов: ${validFiles.length}`);
-  };
-
-  const removeFile = (index: number) => {
-    setFiles(prev => prev.filter((_, i) => i !== index));
-    toast.info('Файл удалён из списка');
-  };
-
   const handleUpload = async () => {
     if (files.length === 0) {
       toast.error('Выберите файлы для загрузки');
@@ -134,19 +81,11 @@ const Supplier = () => {
     }, 2000);
   };
 
-  const handleAddProduct = () => {
-    if (!productName || !productPrice || !productQuantity) {
-      toast.error('Заполните все поля');
-      return;
-    }
-
-    toast.success('Товар добавлен!', {
-      description: `${productName} — ${productPrice} ₽`
-    });
-    
-    setProductName('');
-    setProductPrice('');
-    setProductQuantity('');
+  const stats = {
+    totalProducts: myProducts.length,
+    totalViews: myProducts.reduce((sum, p) => sum + p.views, 0),
+    totalInquiries: myProducts.reduce((sum, p) => sum + p.inquiries, 0),
+    pendingPrices: uploadedPrices.filter(p => p.status === 'pending').length
   };
 
   return (
@@ -200,6 +139,8 @@ const Supplier = () => {
             </Badge>
           </div>
 
+          <SupplierStatsCards stats={stats} />
+
           <Tabs defaultValue="upload" className="space-y-6">
             <TabsList className="grid w-full grid-cols-3 bg-dark-lighter border border-gold/20">
               <TabsTrigger
@@ -226,300 +167,20 @@ const Supplier = () => {
             </TabsList>
 
             <TabsContent value="upload" className="animate-fade-in space-y-6">
-              <div className="grid lg:grid-cols-2 gap-6">
-                <Card className="bg-dark-lighter border-gold/20">
-                  <CardHeader>
-                    <CardTitle className="text-gold flex items-center gap-2">
-                      <Icon name="Upload" className="w-6 h-6" />
-                      Загрузка файлов
-                    </CardTitle>
-                    <CardDescription className="text-silver">
-                      Поддерживаются: PDF, Excel (XLS, XLSX), изображения (JPG, PNG)
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div
-                      className={`border-2 border-dashed rounded-lg p-8 text-center transition-all ${
-                        dragActive
-                          ? 'border-gold bg-gold/10'
-                          : 'border-gold/30 hover:border-gold/50'
-                      }`}
-                      onDragEnter={handleDrag}
-                      onDragLeave={handleDrag}
-                      onDragOver={handleDrag}
-                      onDrop={handleDrop}
-                      onClick={() => document.getElementById('file-upload')?.click()}
-                    >
-                      <input
-                        id="file-upload"
-                        type="file"
-                        multiple
-                        accept=".pdf,.xls,.xlsx,.jpg,.jpeg,.png"
-                        onChange={handleFileChange}
-                        className="hidden"
-                      />
-                      <Icon name="Upload" className="w-16 h-16 text-gold mx-auto mb-4" />
-                      <h3 className="text-xl font-semibold text-gold mb-2">
-                        Перетащите файлы сюда
-                      </h3>
-                      <p className="text-silver mb-4">
-                        или нажмите для выбора файлов
-                      </p>
-                      <Badge className="bg-gold/20 text-gold border-gold/30">
-                        Поддерживаются множественные файлы
-                      </Badge>
-                    </div>
-
-                    {files.length > 0 && (
-                      <div className="mt-6 space-y-2">
-                        <h4 className="text-sm font-semibold text-silver mb-3">
-                          Выбрано файлов: {files.length}
-                        </h4>
-                        {files.map((file, index) => (
-                          <div
-                            key={index}
-                            className="flex items-center gap-3 p-3 bg-dark rounded-lg border border-gold/10"
-                          >
-                            <Icon name="FileText" className="w-5 h-5 text-gold flex-shrink-0" />
-                            <div className="flex-1 min-w-0">
-                              <p className="text-sm font-medium text-foreground truncate">
-                                {file.name}
-                              </p>
-                              <p className="text-xs text-silver">
-                                {(file.size / 1024).toFixed(1)} КБ
-                              </p>
-                            </div>
-                            <Button
-                              size="sm"
-                              variant="ghost"
-                              className="text-red-500 hover:text-red-400"
-                              onClick={() => removeFile(index)}
-                            >
-                              <Icon name="X" className="w-4 h-4" />
-                            </Button>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-
-                    <Button
-                      className="w-full mt-6 bg-gradient-to-r from-gold to-gold-dark text-dark hover-scale"
-                      onClick={handleUpload}
-                      disabled={files.length === 0 || uploading}
-                    >
-                      {uploading ? (
-                        <>
-                          <Icon name="Loader2" className="w-4 h-4 mr-2 animate-spin" />
-                          Отправка на анализ...
-                        </>
-                      ) : (
-                        <>
-                          <Icon name="Send" className="w-4 h-4 mr-2" />
-                          Отправить на проверку
-                        </>
-                      )}
-                    </Button>
-                  </CardContent>
-                </Card>
-
-                <Card className="bg-dark-lighter border-gold/20">
-                  <CardHeader>
-                    <CardTitle className="text-gold flex items-center gap-2">
-                      <Icon name="Plus" className="w-6 h-6" />
-                      Добавить товар вручную
-                    </CardTitle>
-                    <CardDescription className="text-silver">
-                      Быстрое добавление отдельных позиций
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium text-foreground">Название товара</label>
-                      <Input
-                        placeholder="Круг ст3 20мм"
-                        value={productName}
-                        onChange={(e) => setProductName(e.target.value)}
-                        className="bg-dark border-gold/20 focus:border-gold text-foreground"
-                      />
-                    </div>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <label className="text-sm font-medium text-foreground">Цена (₽/тонна)</label>
-                        <Input
-                          type="number"
-                          placeholder="48500"
-                          value={productPrice}
-                          onChange={(e) => setProductPrice(e.target.value)}
-                          className="bg-dark border-gold/20 focus:border-gold text-foreground"
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <label className="text-sm font-medium text-foreground">Количество (кг)</label>
-                        <Input
-                          type="number"
-                          placeholder="3000"
-                          value={productQuantity}
-                          onChange={(e) => setProductQuantity(e.target.value)}
-                          className="bg-dark border-gold/20 focus:border-gold text-foreground"
-                        />
-                      </div>
-                    </div>
-                    <Button
-                      className="w-full bg-gradient-to-r from-gold to-gold-dark text-dark hover-scale"
-                      onClick={handleAddProduct}
-                    >
-                      <Icon name="Plus" className="w-4 h-4 mr-2" />
-                      Добавить товар
-                    </Button>
-
-                    <div className="mt-6 p-4 bg-gold/10 rounded-lg border border-gold/30">
-                      <p className="text-sm text-gold flex items-start gap-2">
-                        <Icon name="Info" className="w-4 h-4 flex-shrink-0 mt-0.5" />
-                        AI автоматически распознает товары из загруженных файлов. Вручную добавляйте только отдельные позиции.
-                      </p>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
+              <SupplierUploadTab
+                files={files}
+                setFiles={setFiles}
+                uploading={uploading}
+                handleUpload={handleUpload}
+              />
             </TabsContent>
 
             <TabsContent value="prices" className="animate-fade-in">
-              <Card className="bg-dark-lighter border-gold/20">
-                <CardHeader>
-                  <CardTitle className="text-gold">Загруженные прайс-листы</CardTitle>
-                  <CardDescription className="text-silver">
-                    История загрузок и статусы модерации
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-3">
-                    {uploadedPrices.map((price, index) => (
-                      <Card
-                        key={price.id}
-                        className="bg-dark border-gold/10 hover:border-gold/30 transition-all"
-                        style={{ animationDelay: `${index * 0.1}s` }}
-                      >
-                        <CardContent className="p-4">
-                          <div className="flex items-start gap-4">
-                            <div className="w-12 h-12 bg-gold/20 rounded-lg flex items-center justify-center flex-shrink-0">
-                              <Icon name="FileText" className="w-6 h-6 text-gold" />
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <div className="flex items-start justify-between gap-4 mb-2">
-                                <h4 className="text-lg font-semibold text-foreground truncate">
-                                  {price.fileName}
-                                </h4>
-                                <Badge
-                                  className={
-                                    price.status === 'approved'
-                                      ? 'bg-green-500/20 text-green-500 border-green-500/30'
-                                      : price.status === 'pending'
-                                      ? 'bg-yellow-500/20 text-yellow-500 border-yellow-500/30'
-                                      : 'bg-red-500/20 text-red-500 border-red-500/30'
-                                  }
-                                >
-                                  {price.status === 'approved'
-                                    ? 'Одобрено'
-                                    : price.status === 'pending'
-                                    ? 'На проверке'
-                                    : 'Отклонено'}
-                                </Badge>
-                              </div>
-                              <div className="grid grid-cols-3 gap-4 text-sm text-silver">
-                                <div className="flex items-center gap-2">
-                                  <Icon name="Calendar" className="w-4 h-4" />
-                                  {new Date(price.uploadDate).toLocaleDateString('ru-RU')}
-                                </div>
-                                <div className="flex items-center gap-2">
-                                  <Icon name="Package" className="w-4 h-4" />
-                                  {price.itemsCount} позиций
-                                </div>
-                                <div className="flex items-center gap-2">
-                                  <Icon name="Eye" className="w-4 h-4" />
-                                  {price.views} просмотров
-                                </div>
-                              </div>
-                              {price.status === 'rejected' && price.rejectReason && (
-                                <div className="mt-3 p-3 bg-red-500/10 rounded-lg border border-red-500/30">
-                                  <p className="text-sm text-red-500">
-                                    <strong>Причина отклонения:</strong> {price.rejectReason}
-                                  </p>
-                                </div>
-                              )}
-                            </div>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
+              <SupplierPricesTab uploadedPrices={uploadedPrices} />
             </TabsContent>
 
             <TabsContent value="products" className="animate-fade-in">
-              <Card className="bg-dark-lighter border-gold/20">
-                <CardHeader>
-                  <CardTitle className="text-gold">Активные товары</CardTitle>
-                  <CardDescription className="text-silver">
-                    Товары, доступные в поиске для покупателей
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-3">
-                    {myProducts.map((product, index) => (
-                      <Card
-                        key={product.id}
-                        className="bg-dark border-gold/10 hover:border-gold/30 transition-all hover-scale"
-                        style={{ animationDelay: `${index * 0.1}s` }}
-                      >
-                        <CardContent className="p-4">
-                          <div className="flex items-start justify-between gap-4">
-                            <div className="flex-1">
-                              <h4 className="text-lg font-semibold text-gold mb-2">
-                                {product.name}
-                              </h4>
-                              <div className="grid md:grid-cols-4 gap-3 text-sm text-silver mb-3">
-                                <div className="flex items-center gap-2">
-                                  <Icon name="DollarSign" className="w-4 h-4" />
-                                  {product.price.toLocaleString('ru-RU')} ₽/т
-                                </div>
-                                <div className="flex items-center gap-2">
-                                  <Icon name="Package" className="w-4 h-4" />
-                                  {product.quantity} кг
-                                </div>
-                                <div className="flex items-center gap-2">
-                                  <Icon name="Eye" className="w-4 h-4" />
-                                  {product.views} просмотров
-                                </div>
-                                <div className="flex items-center gap-2">
-                                  <Icon name="MessageSquare" className="w-4 h-4" />
-                                  {product.inquiries} запросов
-                                </div>
-                              </div>
-                            </div>
-                            <div className="flex gap-2">
-                              <Button
-                                size="sm"
-                                variant="outline"
-                                className="border-gold/30 text-gold hover:bg-gold/10"
-                              >
-                                <Icon name="Edit" className="w-4 h-4" />
-                              </Button>
-                              <Button
-                                size="sm"
-                                variant="outline"
-                                className="border-red-500/30 text-red-500 hover:bg-red-500/10"
-                              >
-                                <Icon name="Trash2" className="w-4 h-4" />
-                              </Button>
-                            </div>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
+              <SupplierProductsTab myProducts={myProducts} />
             </TabsContent>
           </Tabs>
         </div>
