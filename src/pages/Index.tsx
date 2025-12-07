@@ -169,6 +169,14 @@ const Index = () => {
               <Button
                 variant="ghost"
                 className="text-silver hover:text-gold transition-colors"
+                onClick={() => navigate('/dashboard')}
+              >
+                <Icon name="Briefcase" className="w-4 h-4 mr-2" />
+                Рабочий стол
+              </Button>
+              <Button
+                variant="ghost"
+                className="text-silver hover:text-gold transition-colors"
                 onClick={() => navigate('/supplier')}
               >
                 <Icon name="Store" className="w-4 h-4 mr-2" />
