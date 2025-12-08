@@ -9,6 +9,8 @@ import AdminStatsCards from '@/components/admin/AdminStatsCards';
 import AdminUploadsTab from '@/components/admin/AdminUploadsTab';
 import AdminPaymentsTab from '@/components/admin/AdminPaymentsTab';
 import AdminUsersTab from '@/components/admin/AdminUsersTab';
+import SupplierModeration from '@/components/admin/SupplierModeration';
+import WebsiteParserForm from '@/components/admin/WebsiteParserForm';
 
 interface PaymentRequest {
   id: number;
@@ -242,8 +244,22 @@ const Admin = () => {
 
           <AdminStatsCards stats={stats} />
 
-          <Tabs defaultValue="uploads" className="space-y-6">
-            <TabsList className="grid w-full max-w-2xl grid-cols-3 bg-dark-lighter border border-gold/20">
+          <Tabs defaultValue="suppliers" className="space-y-6">
+            <TabsList className="grid w-full max-w-4xl grid-cols-5 bg-dark-lighter border border-gold/20">
+              <TabsTrigger
+                value="suppliers"
+                className="data-[state=active]:bg-gold data-[state=active]:text-dark"
+              >
+                <Icon name="Building2" className="w-4 h-4 mr-2" />
+                Поставщики
+              </TabsTrigger>
+              <TabsTrigger
+                value="parser"
+                className="data-[state=active]:bg-gold data-[state=active]:text-dark"
+              >
+                <Icon name="Globe" className="w-4 h-4 mr-2" />
+                AI Парсер
+              </TabsTrigger>
               <TabsTrigger
                 value="uploads"
                 className="data-[state=active]:bg-gold data-[state=active]:text-dark"
@@ -266,6 +282,14 @@ const Admin = () => {
                 Пользователи
               </TabsTrigger>
             </TabsList>
+
+            <TabsContent value="suppliers" className="animate-fade-in space-y-6">
+              <SupplierModeration />
+            </TabsContent>
+
+            <TabsContent value="parser" className="animate-fade-in space-y-6">
+              <WebsiteParserForm />
+            </TabsContent>
 
             <TabsContent value="uploads" className="animate-fade-in space-y-6">
               <AdminUploadsTab

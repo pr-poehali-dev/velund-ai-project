@@ -20,24 +20,24 @@ const WebsiteParserForm = () => {
     setLoading(true);
     setResult(null);
 
-    toast.info('Парсинг сайта...', {
-      description: 'AI анализирует контент и извлекает данные'
+    toast.info('Функция в разработке', {
+      description: 'Пока используйте ручное добавление поставщиков через форму ниже'
     });
 
     setTimeout(() => {
       setLoading(false);
       const mockResult = {
-        company_name: 'МеталлПром РУ',
+        company_name: 'Демо Компания',
         city: 'Москва',
         phone: '+7 (495) 123-45-67',
-        email: 'info@metallprom.ru',
-        products_added: 15
+        email: 'info@example.ru',
+        products_added: 0
       };
       setResult(mockResult);
-      toast.success('Парсинг завершен!', {
-        description: `Добавлено ${mockResult.products_added} товаров`
+      toast.warning('Демо-режим', {
+        description: 'Для полноценной работы парсера требуется дополнительный функционал'
       });
-    }, 3000);
+    }, 2000);
   };
 
   return (

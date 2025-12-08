@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import AddSupplierForm from '@/components/dashboard/AddSupplierForm';
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -379,7 +380,11 @@ const Dashboard = () => {
             </div>
           </div>
 
-          <Card className="bg-dark-lighter border-gold/20 animate-fade-in" style={{ animationDelay: '0.4s' }}>
+          <div className="animate-fade-in" style={{ animationDelay: '0.4s' }}>
+            <AddSupplierForm onSuccess={() => toast.success('Заявка отправлена!')} />
+          </div>
+
+          <Card className="bg-dark-lighter border-gold/20 animate-fade-in" style={{ animationDelay: '0.45s' }}>
             <CardHeader>
               <CardTitle className="text-gold">Быстрые действия</CardTitle>
             </CardHeader>
