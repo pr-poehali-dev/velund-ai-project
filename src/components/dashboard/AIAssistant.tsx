@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { ScrollArea } from '@/components/ui/scroll-area';
 
 const API_URL = 'https://functions.poehali.dev/b24c5b05-f128-4d2c-9b06-d2e9aed4eddf';
 
@@ -228,7 +227,7 @@ const AIAssistant = ({ onSupplierAdd }: AIAssistantProps) => {
       </CardHeader>
       
       <CardContent className="flex-1 flex flex-col gap-4 overflow-hidden">
-        <ScrollArea className="flex-1 pr-4">
+        <div className="flex-1 overflow-y-auto pr-4">
           <div className="space-y-4">
             {messages.map((message) => (
               <div
@@ -315,7 +314,7 @@ const AIAssistant = ({ onSupplierAdd }: AIAssistantProps) => {
             
             <div ref={scrollRef} />
           </div>
-        </ScrollArea>
+        </div>
 
         <div className="space-y-2 border-t border-gold/10 pt-4">
           <div className="flex flex-wrap gap-1">
