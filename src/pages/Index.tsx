@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Icon from '@/components/ui/icon';
 import { Button } from '@/components/ui/button';
@@ -5,6 +6,18 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 
 const Index = () => {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const user = localStorage.getItem('velund_user');
+    if (user) {
+      const userData = JSON.parse(user);
+      if (userData.role === 'admin') {
+        navigate('/admin');
+      } else {
+        navigate('/dashboard');
+      }
+    }
+  }, [navigate]);
 
   return (
     <div className="min-h-screen bg-dark">
