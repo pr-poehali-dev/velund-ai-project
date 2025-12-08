@@ -226,8 +226,8 @@ const AIAssistant = ({ onSupplierAdd }: AIAssistantProps) => {
         </CardDescription>
       </CardHeader>
       
-      <CardContent className="flex-1 flex flex-col gap-4 overflow-hidden">
-        <div className="flex-1 overflow-y-auto pr-4">
+      <CardContent className="flex-1 flex flex-col gap-4 min-h-0">
+        <div className="flex-1 overflow-y-auto pr-2">
           <div className="space-y-4">
             {messages.map((message) => (
               <div
