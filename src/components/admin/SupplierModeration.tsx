@@ -19,6 +19,9 @@ interface Supplier {
   user_name: string;
   user_email: string;
   created_at: string;
+  file_name?: string;
+  file_data?: string;
+  file_size?: number;
 }
 
 const SupplierModeration = () => {
@@ -93,14 +96,15 @@ const SupplierModeration = () => {
         return;
       }
 
-      toast.success(
-        action === 'approve' ? 'Поставщик одобрен!' : 'Поставщик отклонен',
-        {
-          description: action === 'approve' 
-            ? 'Данные добавлены в общую базу' 
-            : 'Пользователь получит уведомление'
-        }
-      );
+      if (action === 'approve') {
+        toast.success('Поставщик одобрен!', {
+          description: 'Сейчас система автоматически парсит файл и добавит товары в базу'
+        });
+      } else {
+        toast.error('Поставщик отклонен', {
+          description: 'Пользователь получит уведомление'
+        });
+      }
 
       fetchSuppliers();
     } catch (error) {
@@ -198,6 +202,25 @@ const SupplierModeration = () => {
                           </div>
                         )}
                       </div>
+
+                      {supplier.file_name && (
+                        <div className="flex items-center gap-2 p-3 bg-dark rounded border border-gold/10">
+                          <Icon name="FileText" className="w-5 h-5 text-gold" />
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-semibold text-foreground truncate">
+                              {supplier.file_name}
+                            </p>
+                            {supplier.file_size && (
+                              <p className="text-xs text-silver">
+                                {(supplier.file_size / 1024).toFixed(1)} KB
+                              </p>
+                            )}
+                          </div>
+                          <Badge className="bg-gold/20 text-gold border-gold/30 text-xs">
+                            Прайс-лист
+                          </Badge>
+                        </div>
+                      )}
 
                       {supplier.description && (
                         <p className="text-sm text-silver bg-dark p-3 rounded border border-gold/10">

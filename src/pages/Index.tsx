@@ -125,8 +125,8 @@ const Index = () => {
                             <Icon name="Calendar" className="w-5 h-5 text-gold" />
                           </div>
                           <div className="flex-1">
-                            <h4 className="text-lg font-bold text-gold mb-1">Месяц Безлимит</h4>
-                            <p className="text-2xl font-bold text-foreground mb-2">1,200 ₽</p>
+                            <h4 className="text-lg font-bold text-gold mb-1">Premium на месяц</h4>
+                            <p className="text-2xl font-bold text-foreground mb-2">1,999 ₽</p>
                             <ul className="space-y-1 text-sm text-silver">
                               <li className="flex items-center gap-1">
                                 <Icon name="Check" className="w-3 h-3 text-gold" />
@@ -155,8 +155,8 @@ const Index = () => {
                             <Icon name="Clock" className="w-5 h-5 text-silver" />
                           </div>
                           <div className="flex-1">
-                            <h4 className="text-lg font-bold text-silver mb-1">День Безлимит</h4>
-                            <p className="text-2xl font-bold text-foreground mb-2">150 ₽</p>
+                            <h4 className="text-lg font-bold text-silver mb-1">Premium на день</h4>
+                            <p className="text-2xl font-bold text-foreground mb-2">200 ₽</p>
                             <ul className="space-y-1 text-sm text-silver">
                               <li className="flex items-center gap-1">
                                 <Icon name="Check" className="w-3 h-3 text-silver" />

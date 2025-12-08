@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import AddSupplierForm from '@/components/dashboard/AddSupplierForm';
+import AIAssistant from '@/components/dashboard/AIAssistant';
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -187,51 +187,9 @@ const Dashboard = () => {
 
           <div className="grid lg:grid-cols-3 gap-6">
             <div className="lg:col-span-2 space-y-6">
-              <Card className="bg-dark-lighter border-gold/20 animate-fade-in" style={{ animationDelay: '0.2s' }}>
-                <CardHeader>
-                  <CardTitle className="text-gold flex items-center gap-2">
-                    <Icon name="Bot" className="w-6 h-6" />
-                    Спроси у Velund AI
-                  </CardTitle>
-                  <CardDescription className="text-silver">
-                    Умный помощник по поиску поставщиков и ценам
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="flex gap-2">
-                    <Input
-                      placeholder="Например: Кто в Казани продает швеллер 12П?"
-                      value={aiQuery}
-                      onChange={(e) => setAiQuery(e.target.value)}
-                      onKeyDown={(e) => e.key === 'Enter' && handleAiQuery()}
-                      className="bg-dark border-gold/20 focus:border-gold text-foreground"
-                    />
-                    <Button 
-                      className="bg-gradient-to-r from-gold to-gold-dark text-dark hover-scale"
-                      onClick={handleAiQuery}
-                    >
-                      <Icon name="Send" className="w-4 h-4" />
-                    </Button>
-                  </div>
-
-                  <div className="space-y-2">
-                    <p className="text-xs text-silver font-semibold">Популярные запросы:</p>
-                    <div className="flex flex-wrap gap-2">
-                      {aiSuggestions.map((suggestion, index) => (
-                        <Button
-                          key={index}
-                          size="sm"
-                          variant="outline"
-                          className="border-gold/20 text-silver hover:bg-gold/10 hover:text-gold text-xs"
-                          onClick={() => setAiQuery(suggestion)}
-                        >
-                          {suggestion}
-                        </Button>
-                      ))}
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+              <div className="animate-fade-in" style={{ animationDelay: '0.2s' }}>
+                <AIAssistant onSupplierAdd={() => toast.success('Файл отправлен!')} />
+              </div>
 
               <Card className="bg-dark-lighter border-gold/20 animate-fade-in" style={{ animationDelay: '0.3s' }}>
                 <CardHeader>
@@ -387,11 +345,7 @@ const Dashboard = () => {
             </div>
           </div>
 
-          <div className="animate-fade-in" style={{ animationDelay: '0.4s' }}>
-            <AddSupplierForm onSuccess={() => toast.success('Заявка отправлена!')} />
-          </div>
-
-          <Card className="bg-dark-lighter border-gold/20 animate-fade-in" style={{ animationDelay: '0.45s' }}>
+          <Card className="bg-dark-lighter border-gold/20 animate-fade-in" style={{ animationDelay: '0.4s' }}>
             <CardHeader>
               <CardTitle className="text-gold">Быстрые действия</CardTitle>
             </CardHeader>

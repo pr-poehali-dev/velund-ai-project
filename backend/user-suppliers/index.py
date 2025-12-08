@@ -153,6 +153,9 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
             email = body_data.get('email')
             website_url = body_data.get('website_url')
             description = body_data.get('description')
+            file_name = body_data.get('file_name')
+            file_data = body_data.get('file_data')
+            file_size = body_data.get('file_size')
             
             if not company_name:
                 return {
@@ -164,10 +167,10 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
             
             cursor.execute('''
                 INSERT INTO user_suppliers 
-                (user_id, company_name, city, phone, email, website_url, description)
-                VALUES (%s, %s, %s, %s, %s, %s, %s)
+                (user_id, company_name, city, phone, email, website_url, description, file_name, file_data, file_size)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                 RETURNING *
-            ''', (user_id, company_name, city, phone, email, website_url, description))
+            ''', (user_id, company_name, city, phone, email, website_url, description, file_name, file_data, file_size))
             
             new_supplier = cursor.fetchone()
             conn.commit()
