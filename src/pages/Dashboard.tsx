@@ -1,22 +1,18 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'sonner';
 import Icon from '@/components/ui/icon';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import AIAssistant from '@/components/dashboard/AIAssistant';
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const [aiQuery, setAiQuery] = useState('');
 
   useEffect(() => {
     const user = localStorage.getItem('velund_user');
     if (!user) {
       navigate('/auth');
+      return;
     }
   }, [navigate]);
 
@@ -46,30 +42,7 @@ const Dashboard = () => {
     { id: 3, text: 'СталПром обновил прайс', time: '2 часа назад', type: 'update' }
   ];
 
-  const aiSuggestions = [
-    'Кто в Казани продает швеллер 12П?',
-    'Средняя цена на лист 09Г2С 4мм в Москве?',
-    'Покажи прямых поставщиков нержавейки',
-    'Топ-5 дешевых труб профильных 40х40'
-  ];
 
-  const handleAiQuery = () => {
-    if (!aiQuery.trim()) {
-      toast.error('Введите запрос');
-      return;
-    }
-
-    toast.success('AI ищет ответ...', {
-      description: 'Анализирую базу поставщиков'
-    });
-
-    setTimeout(() => {
-      toast.success('Найдено 3 варианта!', {
-        description: 'Результаты готовы в разделе поиска'
-      });
-      setAiQuery('');
-    }, 2000);
-  };
 
   const stats = {
     suppliers: 1247,
@@ -187,9 +160,6 @@ const Dashboard = () => {
 
           <div className="grid lg:grid-cols-3 gap-6">
             <div className="lg:col-span-2 space-y-6">
-              <div className="animate-fade-in" style={{ animationDelay: '0.2s' }}>
-                <AIAssistant onSupplierAdd={() => toast.success('Файл отправлен!')} />
-              </div>
 
               <Card className="bg-dark-lighter border-gold/20 animate-fade-in" style={{ animationDelay: '0.3s' }}>
                 <CardHeader>
