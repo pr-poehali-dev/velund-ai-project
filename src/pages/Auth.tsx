@@ -245,14 +245,13 @@ const Auth = () => {
           </TabsContent>
 
           <TabsContent value="register" className="animate-fade-in mt-6">
-            <div className="grid lg:grid-cols-2 gap-6">
-              <Card className="bg-dark-lighter border-gold/20">
-                <CardHeader>
-                  <CardTitle className="text-2xl text-gold">Создать аккаунт</CardTitle>
-                  <CardDescription className="text-silver">
-                    Заполните форму для регистрации
-                  </CardDescription>
-                </CardHeader>
+            <Card className="max-w-md mx-auto bg-dark-lighter border-gold/20">
+              <CardHeader>
+                <CardTitle className="text-2xl text-gold">Создать аккаунт</CardTitle>
+                <CardDescription className="text-silver">
+                  Регистрация бесплатна. После входа выберите тариф для доступа к функциям.
+                </CardDescription>
+              </CardHeader>
                 <CardContent>
                   <form onSubmit={handleRegister} className="space-y-4">
                     <div className="space-y-2">
@@ -329,59 +328,6 @@ const Auth = () => {
                   </form>
                 </CardContent>
               </Card>
-
-              <div className="space-y-4">
-                <h3 className="text-xl font-semibold text-gold mb-4">Выберите тариф</h3>
-                {roles.map((role, index) => (
-                  <Card
-                    key={role.id}
-                    onClick={() => setSelectedRole(role.id)}
-                    className={`cursor-pointer transition-all hover-scale ${
-                      selectedRole === role.id
-                        ? 'bg-dark-lighter border-gold border-2'
-                        : 'bg-dark-lighter border-gold/20'
-                    }`}
-                    style={{ animationDelay: `${index * 0.1}s` }}
-                  >
-                    <CardContent className="p-4">
-                      <div className="flex items-start gap-4">
-                        <div className={`w-12 h-12 bg-${role.color}/20 rounded-lg flex items-center justify-center flex-shrink-0`}>
-                          <Icon name={role.icon} className={`w-6 h-6 text-${role.color}`} />
-                        </div>
-                        <div className="flex-1">
-                          <div className="flex items-center gap-2 mb-1">
-                            <h4 className={`text-lg font-semibold text-${role.color}`}>
-                              {role.name}
-                            </h4>
-                            {role.popular && (
-                              <Badge className="bg-gold/20 text-gold border-gold/30 text-xs">
-                                Популярный
-                              </Badge>
-                            )}
-                          </div>
-                          <p className="text-xl font-bold text-foreground mb-3">{role.price}</p>
-                          <ul className="space-y-1">
-                            {role.features.map((feature, i) => (
-                              <li key={i} className="text-sm text-silver flex items-start gap-2">
-                                <Icon name="Check" className="w-4 h-4 text-gold flex-shrink-0 mt-0.5" />
-                                <span>{feature}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                        {selectedRole === role.id && (
-                          <div className="flex-shrink-0">
-                            <div className="w-6 h-6 bg-gold rounded-full flex items-center justify-center">
-                              <Icon name="Check" className="w-4 h-4 text-dark" />
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </div>
           </TabsContent>
         </Tabs>
 
