@@ -1,0 +1,30 @@
+{
+  "tests": [
+    {
+      "name": "Get user suppliers without auth",
+      "method": "GET",
+      "path": "/",
+      "expectedStatus": 401
+    },
+    {
+      "name": "Create supplier",
+      "method": "POST",
+      "path": "/",
+      "headers": {
+        "X-User-Id": "1"
+      },
+      "body": {
+        "company_name": "Test Supplier",
+        "city": "Moscow",
+        "phone": "+7 123 456 7890",
+        "email": "test@example.com"
+      },
+      "expectedStatus": 201,
+      "expectedBody": {
+        "company_name": "Test Supplier",
+        "status": "pending"
+      },
+      "bodyMatcher": "partial"
+    }
+  ]
+}
