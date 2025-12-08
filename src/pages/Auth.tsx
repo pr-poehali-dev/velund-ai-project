@@ -112,7 +112,7 @@ const Auth = () => {
         description: 'Добро пожаловать в Velund AI'
       });
 
-      navigate('/');
+      navigate('/dashboard');
     } catch (error) {
       toast.error('Ошибка подключения к серверу');
     } finally {
