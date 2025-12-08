@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import Icon from '@/components/ui/icon';
@@ -12,6 +12,13 @@ import AddSupplierForm from '@/components/dashboard/AddSupplierForm';
 const Dashboard = () => {
   const navigate = useNavigate();
   const [aiQuery, setAiQuery] = useState('');
+
+  useEffect(() => {
+    const user = localStorage.getItem('velund_user');
+    if (!user) {
+      navigate('/auth');
+    }
+  }, [navigate]);
 
   const todayTasks = [
     { id: 1, title: 'Связаться с СталПром', time: '10:00', priority: 'high', done: false },

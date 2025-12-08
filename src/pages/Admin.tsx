@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import Icon from '@/components/ui/icon';
@@ -46,6 +46,18 @@ const Admin = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [activeFilter, setActiveFilter] = useState<'all' | 'pending' | 'approved' | 'rejected'>('all');
+
+  useEffect(() => {
+    const user = localStorage.getItem('velund_user');
+    if (!user) {
+      navigate('/auth');
+      return;
+    }
+    const userData = JSON.parse(user);
+    if (userData.role !== 'admin') {
+      navigate('/dashboard');
+    }
+  }, [navigate]);
 
   const mockPayments: PaymentRequest[] = [
     {

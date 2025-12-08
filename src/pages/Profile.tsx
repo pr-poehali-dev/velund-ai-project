@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Icon from '@/components/ui/icon';
 import { Button } from '@/components/ui/button';
@@ -12,6 +12,13 @@ const Profile = () => {
   const [userName, setUserName] = useState('Иван Иванов');
   const [userEmail, setUserEmail] = useState('ivan@example.com');
   const [userPhone, setUserPhone] = useState('+7 (900) 123-45-67');
+
+  useEffect(() => {
+    const user = localStorage.getItem('velund_user');
+    if (!user) {
+      navigate('/auth');
+    }
+  }, [navigate]);
   
   // Mock user data
   const userRole = 'user'; // 'user' | 'premium' | 'admin'
