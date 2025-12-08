@@ -21,7 +21,7 @@ const Auth = () => {
   const [registerEmail, setRegisterEmail] = useState('');
   const [registerPassword, setRegisterPassword] = useState('');
   const [registerPhone, setRegisterPhone] = useState('');
-  const [selectedRole, setSelectedRole] = useState<'user' | 'premium' | 'admin'>('user');
+  const [selectedRole, setSelectedRole] = useState<'user' | 'premium'>('user');
 
   const [loading, setLoading] = useState(false);
   const API_URL = 'https://functions.poehali.dev/580b33e9-2602-423a-bd33-2eea5895bfe7';
@@ -123,47 +123,33 @@ const Auth = () => {
   const roles = [
     {
       id: 'user' as const,
-      name: 'Базовый',
+      name: 'Пробный (1 день)',
       icon: 'User',
-      price: 'Бесплатно',
+      price: '150 ₽',
       features: [
+        'Полный доступ на 1 день',
         'Поиск по базе поставщиков',
         'Просмотр прайс-листов',
-        'Базовая статистика',
-        '10 запросов к AI в день'
+        'AI помощник',
+        'Экспорт данных'
       ],
       color: 'silver'
     },
     {
       id: 'premium' as const,
-      name: 'Premium',
+      name: 'Premium (1 месяц)',
       icon: 'Crown',
-      price: '4,990 ₽/мес',
+      price: '1,200 ₽/мес',
       features: [
-        'Всё из базового тарифа',
-        'Неограниченные AI запросы',
+        'Полный доступ на 30 дней',
+        'Неограниченный поиск',
         'Загрузка своих прайсов',
         'Экспорт данных',
-        'Уведомления о ценах',
+        'AI помощник без ограничений',
         'Приоритетная поддержка'
       ],
       color: 'gold',
       popular: true
-    },
-    {
-      id: 'admin' as const,
-      name: 'Администратор',
-      icon: 'Shield',
-      price: 'По запросу',
-      features: [
-        'Полный доступ к системе',
-        'Управление пользователями',
-        'Управление базой данных',
-        'Модерация контента',
-        'Аналитика и отчёты',
-        'API доступ'
-      ],
-      color: 'gold-dark'
     }
   ];
 
